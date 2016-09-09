@@ -1,0 +1,54 @@
+version: '2'
+services:
+
+  django_image:
+    build: ./docker_django_app
+    restart: always
+    #command: /bin/bash -c "/usr/local/bin/gunicorn docker_django_app.wsgi:application -w 2 -b :8000 --log-file /tmp/guni.log --log-level debug; python manage.py migrate"
+    command: /usr/local/bin/gunicorn docker_django_app.wsgi:application -w 2 -b :8080
+    volumes:
+      - ./docker_django_app:/code
+    expose:
+      - "8080"
+    depends_on:
+      - db
+      - redis
+    env_file: .env
+    links:
+      - db:db
+      - redis:redis
+  nginx:
+    restart: always
+    build: ./nginx/
+    ports:
+      - "80:80"
+    volumes_from:
+      - django_image
+      - data
+    links:
+      - django_image:django_image
+    #volumes:
+    #- /www/static
+
+  db:
+    image: postgres
+    volumes_from:
+      - data
+    restart: always
+    ports:
+      - "5432:5432"
+
+  redis:
+    restart: always
+    image: redis:latest
+    ports:
+       - "6379:6379"
+
+  data:
+    restart: always
+    image: postgres
+    volumes:
+      - /var/lib/postgresql
+      - /etc/postgresql
+      - /var/log/nginx:/var/log/nginx
+    command: "true"

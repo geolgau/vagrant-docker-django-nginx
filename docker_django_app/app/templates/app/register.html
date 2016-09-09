@@ -1,0 +1,57 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>Register</h2>
+<div class="row">
+    <div class="col-md-8">
+        <section id="registrationForm">
+
+        {% if form.errors %}
+            <p class="validation-summary-errors">You can not register this account.</p>
+        {% endif %}
+
+        <form method="post" class="form-horizontal" action=".">
+             {% csrf_token %}
+            <h4>Enter a username and a password for registration.</h4>
+            <hr />
+            <div class="form-group">
+                <label for="id_username" class="col-md-2 control-label">User name</label>
+                    <div class="col-md-10">
+                        {{ form.username }}
+	            </div>
+            </div>
+            <div class="form-group">
+                 <label for="id_password1" class="col-md-2 control-label">Password</label>
+                    <div class="col-md-10">
+                        {{ form.password1 }}
+                    </div>
+            </div>
+            <div class="form-group">
+                    <label for="id_password2" class="col-md-2 control-label">Password confirmation</label>
+                        <div class="col-md-10">
+                        {{ form.password2 }}
+                        </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="hidden" name="next" value="/login/" />
+                    <input type="submit" name="register" value="Register" class="btn btn-default"/>
+        </form>
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm"></section>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+    {% load staticfiles %}
+<script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+
+{% endblock %}
+
