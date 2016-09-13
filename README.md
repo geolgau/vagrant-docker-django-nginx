@@ -12,8 +12,8 @@ The stack includes a separate container for each service:
 
 Architecture :
 
-1. First, the django_image service is built via the instructions in the Dockerfile within the ìdjango_imageî directory ñ where the Python environment is setup, 
-requirements are installed, and the Django application is fired up on port 8000. That port is then forwarded to port 80 on the host environment ñ e.g., the Docker Machine. 
+1. First, the django_image service is built via the instructions in the Dockerfile within the ‚Äúdjango_image‚Äù directory ‚Äì where the Python environment is setup, 
+requirements are installed, and the Django application is fired up on port 8080. That port is then forwarded to port 80 on the host environment ‚Äì e.g., the Docker Machine. 
 This service also adds environment variables to the container that are defined in the .env file.
 2. The nginx service is used for reverse proxy to forward requests either to Django or the static file directory.
 3. Next, the postgres service is built from the the official PostgreSQL image from Docker Hub, which installs Postgres and runs the server on the default port 5432. 
